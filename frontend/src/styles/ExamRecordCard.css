@@ -1,0 +1,52 @@
+/* src/styles/examRecordCard.css */
+
+.exam-card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .exam-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .exam-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .exam-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2c3e50;
+  }
+  
+  .exam-date, .exam-status {
+    font-size: 16px;
+    color: #7f8c8d;
+    margin-top: 5px;
+  }
+  
+  .exam-actions {
+    margin-top: 20px;
+  }
+  
+  .verify-btn {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .verify-btn:hover {
+    background-color: #2980b9;
+  }
+  

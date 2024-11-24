@@ -1,0 +1,13 @@
+.blockchain-status {
+    padding: 20px;
+    background-color: #f8f9fa;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .status-message {
+    color: #28a745;
+    font-weight: bold;
+  }
+  

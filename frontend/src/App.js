@@ -1,32 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Routes, Route } from 'react-router-dom'; // Import Routes and Route for routing
 import './App.css';
 import Login from './components/Login';
 import Register from './components/Register';
+import LandingPage from './components/LandingPage';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import ExamRecordCard from './components/ExamRecordCard';
+import DashboardPage from './components/DashboardPage';
+import AdminPage from './components/AdminPage';
+import VerifyPage from './components/VerifyPage';
+import Navbar from './components/Navbar';
+import BlockchainStatus from './components/BlockchainStatus';
+import LoadingSpinner from './components/LoadingSpinner';
 
-function App() {
-  const [showLogin, setShowLogin] = useState(true); // State to toggle between Login and Register
-
-  // Toggle function to switch forms
-  const toggleForm = () => {
-    setShowLogin(!showLogin); // Toggle the state between true and false
-  };
-
+const App = () => {
   return (
     <div className="App">
-      <h1>Login System</h1>
-
-      {/* Toggle button to switch between Login and Register */}
-      <div className="form-toggle">
-        <button onClick={toggleForm}>
-          {showLogin ? "Don't have an account? Register here" : "Already have an account? Login here"}
-        </button>
-      </div>
-
-      <div className="form-container">
-        {showLogin ? <Login /> : <Register />} {/* Conditionally render Login or Register */}
-      </div>
+      <Header />
+      <Navbar /> {/* Added Navbar */}
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/exam-records"
+          element={<ExamRecordCard exam={{ name: 'Math Exam', date: '2024-06-12', status: 'Passed' }} />}
+        />
+        <Route path="/dashboard" element={<DashboardPage />} /> {/* Dashboard page */}
+        <Route path="/admin" element={<AdminPage />} /> {/* Admin page */}
+        <Route path="/verify" element={<VerifyPage />} /> {/* Verify page */}
+        <Route path="/blockchain-status" element={<BlockchainStatus />} /> {/* Blockchain status */}
+        <Route path="/loading" element={<LoadingSpinner />} /> {/* Loading spinner demo */}
+      </Routes>
+      <Footer />
     </div>
   );
-}
+};
 
 export default App;
