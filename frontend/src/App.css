@@ -1,31 +1,62 @@
-/* src/App.css */
-body {
+.App {
+  text-align: center;
   font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
+  background-color: #f4f4f9;
+  padding: 50px 20px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-nav {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-}
-
-nav ul {
-  list-style: none;
-  padding: 0;
-}
-
-nav ul li {
-  display: inline;
-  margin-right: 15px;
-}
-
-nav ul li a {
-  color: white;
-  text-decoration: none;
-}
-
-h1, h2 {
+h1 {
   color: #333;
+  margin-bottom: 30px;
+  font-size: 2rem;
+}
+
+.form-container {
+  max-width: 400px;
+  width: 100%;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-toggle {
+  margin-bottom: 20px;
+}
+
+.form-toggle button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-toggle button:hover {
+  background-color: #45a049;
+}
+
+.form-container input,
+.form-container button {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.form-container button {
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+}
+
+.form-container button:hover {
+  background-color: #45a049;
 }

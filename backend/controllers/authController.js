@@ -1,80 +1,74 @@
-const { User } = require('../models/User');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const pool = require('../config/db'); // Adjust the path to your database configuration file
 
-// Register a new user
-exports.register = async (req, res) => {
-    try {
-        const { name, email, password, role } = req.body;
+// Login function
+const loginUser = async (req, res) => {
+  //console.log('Login request received:', req.body);
+  const { username, password } = req.body;
 
-        // Check if the user already exists
-        const existingUser = await User.findOne({ where: { email } });
-        if (existingUser) {
-            return res.status(400).json({ message: 'Email already in use.' });
-        }
+  if (!username || !password) {
+    return res.status(400).json({ message: 'Username and password are required.' });
+  }
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    const [rows] = await pool.execute(
+      'SELECT id, username, password FROM students WHERE username = ?',
+      [username]
+    );
 
-        // Create the user
-        const newUser = await User.create({
-            name,
-            email,
-            password: hashedPassword,
-            role,
-        });
-
-        res.status(201).json({ message: 'User registered successfully', user: newUser });
-    } catch (error) {
-        res.status(500).json({ message: 'Error registering user.', error });
+    if (rows.length === 0) {
+      return res.status(400).json({ message: 'Invalid username or password.' });
     }
+
+    const user = rows[0];
+    const match = await bcrypt.compare(password, user.password);
+
+    if (match) {
+      return res.status(200).json({ message: 'Login successful', userId: user.id });
+    } else {
+      return res.status(400).json({ message: 'Invalid username or password.' });
+    }
+  } catch (err) {
+    console.error('Error during login:', err);
+    return res.status(500).json({ message: 'Internal server error.' });
+  }
 };
 
-// Login a user
-exports.login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
+// Register function
+const registerUser = async (req, res) => {
+  //console.log('Registration request received:', req.body);
+  const { username, password, email } = req.body;
 
-        // Check if the user exists
-        const user = await User.findOne({ where: { email } });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
+  if (!username || !password || !email) {
+    return res.status(400).json({ message: 'Username, password, and email are required.' });
+  }
 
-        // Compare the password
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid credentials.' });
-        }
+  try {
+    const [existingUser] = await pool.execute('SELECT * FROM students WHERE username = ?', [username]);
 
-        // Generate a JWT token
-        const token = jwt.sign(
-            { id: user.id, role: user.role },
-            process.env.JWT_SECRET,
-            { expiresIn: '1d' }
-        );
-
-        res.status(200).json({ message: 'Login successful', token, user });
-    } catch (error) {
-        res.status(500).json({ message: 'Error logging in user.', error });
+    if (existingUser.length > 0) {
+      return res.status(400).json({ message: 'Username already taken.' });
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const [result] = await pool.execute(
+      'INSERT INTO students (username, password, email, created_at) VALUES (?, ?, ?, NOW())',
+      [username, hashedPassword, email]
+    );
+
+    return res.status(201).json({
+      message: 'Registration successful! Welcome aboard!',
+      userId: result.insertId,
+    });
+  } catch (err) {
+    console.error('Error during registration:', err);
+
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(400).json({ message: 'Email or username already exists.' });
+    }
+
+    return res.status(500).json({ message: 'Failed to register user. Please try again.' });
+  }
 };
 
-// Get the authenticated user's details
-exports.getUserProfile = async (req, res) => {
-    try {
-        const userId = req.user.id;
-
-        const user = await User.findByPk(userId, {
-            attributes: { exclude: ['password'] }, // Do not return the password
-        });
-
-        if (!user) {
-            return res.status(404).json({ message: 'User not found.' });
-        }
-
-        res.status(200).json({ user });
-    } catch (error) {
-        res.status(500).json({ message: 'Error fetching user profile.', error });
-    }
-};
+module.exports = { loginUser, registerUser };
