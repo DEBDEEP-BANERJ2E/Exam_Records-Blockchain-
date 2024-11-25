@@ -1,18 +1,56 @@
 .admin-page {
-    text-align: center;
-    padding: 50px;
-  }
-  
-  .admin-btn {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .admin-btn:hover {
-    background-color: #0056b3;
-  }
-  
+  max-width: 800px;
+  margin: auto;
+  margin-top: 150px;
+  margin-bottom: 100px;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.admin-form-container {
+  margin-top: 20px;
+}
+
+.admin-form h2 {
+  text-align: center;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-btn {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.admin-btn {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border: none;
+}
+
+.admin-btn:hover {
+  background-color: #0056b3;
+}
+
+.admin-form input:focus,
+.admin-form select:focus {
+  border-color: #007bff;
+  outline: none;
+}

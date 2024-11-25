@@ -14,7 +14,7 @@ const DashboardPage = () => {
         { name: "Physics", marks: 72, status: "Pass" },
         { name: "Basic Electrical Engineering", marks: 90, status: "Pass" },
         { name: "Engineering Graphics", marks: 65, status: "Pass" },
-        { name: "Programming for Problem Solving", marks: 48, status: "Fail" },
+        { name: "Programming for Problem Solving", marks: 38, status: "Fail" },
       ],
     },
     {
@@ -44,7 +44,7 @@ const DashboardPage = () => {
         { name: "Computer Networks", marks: 78, status: "Pass" },
         { name: "Software Engineering", marks: 84, status: "Pass" },
         { name: "Theory of Computation", marks: 68, status: "Pass" },
-        { name: "Design and Analysis of Algorithms", marks: 59, status: "Fail" },
+        { name: "Design and Analysis of Algorithms", marks: 39, status: "Fail" },
       ],
     },
     {
