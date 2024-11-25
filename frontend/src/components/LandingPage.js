@@ -26,12 +26,7 @@ const LandingPage = () => {
       <div className="landing-footer">
         <Link to="/login">
           <button className="start-btn">
-            Get Started (Login)
-          </button>
-        </Link>
-        <Link to="/register">
-          <button className="start-btn">
-            Get Started (Register)
+            Get Started
           </button>
         </Link>
       </div>

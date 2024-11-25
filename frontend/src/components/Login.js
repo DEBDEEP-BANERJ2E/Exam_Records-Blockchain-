@@ -1,21 +1,21 @@
+// src/components/Login.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../styles/Login.css'; // Corrected import for CSS
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [userRole, setUserRole] = useState('student'); // Default role is 'student'
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
 
-  // Handle username and password change
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
-  };
-
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
+  // Handle input changes
+  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleRoleChange = (e) => setUserRole(e.target.value);
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -27,34 +27,35 @@ const Login = () => {
       return;
     }
 
-    console.log('Logging in with:', { username, password });
+    console.log('Logging in with:', { username, password, userRole });
 
     try {
-      // Send a POST request to the backend API
+      // Send a POST request to the backend API with role
       const response = await axios.post('http://localhost:5001/api/auth/login', {
         username,
-        password
+        password,
+        role: userRole, // Include the role in the request
       });
 
       if (response.status === 200) {
         setMessage('Login successful!');
         setIsError(false);
-        // Optionally redirect the user to another page after successful login
-        window.location.href = '/exam-records'; // Replace with your desired route
+
+        // Redirect based on user role
+        if (userRole === 'student') {
+          window.location.href = '/student-dashboard';
+        } else if (userRole === 'admin') {
+          window.location.href = '/admin-dashboard';
+        }
       } else {
         setMessage('Login failed. Please check your credentials.');
         setIsError(true);
       }
     } catch (error) {
-      // Network error or wrong API endpoint handling
       console.error('Error logging in:', error);
-      if (error.response) {
-        // Backend returned an error
-        setMessage(error.response.data.message || 'Login failed. Please check your credentials.');
-      } else {
-        // Network error
-        setMessage('Network error. Please try again later.');
-      }
+      setMessage(
+        error.response?.data?.message || 'Login failed. Please try again.'
+      );
       setIsError(true);
     }
   };
@@ -62,7 +63,13 @@ const Login = () => {
   return (
     <div className="login-container">
       <h2>Login</h2>
-      {message && <p style={{ color: isError ? 'red' : 'green' }}>{message}</p>}
+      <div>
+        <label htmlFor="role">Role:</label>
+        <select id="role" value={userRole} onChange={handleRoleChange}>
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
@@ -88,6 +95,13 @@ const Login = () => {
 
         <button type="submit">Login</button>
       </form>
+      {message && (
+        <p className={isError ? 'error' : 'success'}>{message}</p>
+      )}
+      {/* New User Registration Link */}
+      <p className="register-link">
+        New user? <Link to="/register">Register here</Link>
+      </p>
     </div>
   );
 };

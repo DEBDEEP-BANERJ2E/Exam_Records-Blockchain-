@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './BlockchainStatus.css';
+import '../styles/BlockchainStatus.css';
 
 const BlockchainStatus = () => {
   const [status, setStatus] = useState('Connecting...');

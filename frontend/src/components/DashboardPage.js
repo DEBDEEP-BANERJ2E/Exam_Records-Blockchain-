@@ -1,6 +1,6 @@
 import React from 'react';
 import ExamRecordCard from './ExamRecordCard';
-import './DashboardPage.css';
+import '../styles/DashboardPage.css';
 
 const DashboardPage = () => {
   const examRecords = [

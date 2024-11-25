@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './VerifyPage.css';
+import '../styles/VerifyPage.css';
 
 const VerifyPage = () => {
   const [isVerified, setIsVerified] = useState(false);

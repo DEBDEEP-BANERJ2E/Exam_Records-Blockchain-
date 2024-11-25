@@ -1,39 +1,128 @@
+/* Center the login container */
 .login-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 100px auto;
+  margin-top: 150px;
+  margin-bottom: 50px;
+  padding: 20px;
+  padding-left: 60px;
+  padding-right: 60px;
+  max-width: 480px; /* Increased container width */
+  font-family: Arial, sans-serif;
+  border: 1px solid #e0e0e0; /* Add a light border for subtle separation */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow for better visual */
+  background-color: #f9f9f9; /* Light background for better contrast */
+}
+
+/* Form Header */
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px; /* Slightly larger font for the header */
+  color: #333;
+}
+
+/* Input Fields and Dropdown */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+  color: #444; /* Slightly darker text for better readability */
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px; /* Increased padding for larger fields */
+  padding-left: 20px;
+  padding-right: 60px;
+  margin-bottom: 16px; /* Increased spacing between fields */
+  font-size: 16px; /* Increased font size for better readability */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #fff; /* Ensure inputs are white for contrast */
+}
+
+input:focus,
+select:focus {
+  border-color: #4CAF50;
+  outline: none;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Light green glow on focus */
+}
+
+/* Submit Button */
+button {
+  width: 100%;
+  padding: 12px; /* Comfortable button size */
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px; /* Slightly larger text for emphasis */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #45a049; /* Darker green on hover */
+}
+
+/* Role Dropdown */
+select {
+  cursor: pointer;
+}
+
+/* Message Styling */
+p {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 10px;
+  color: #333;
+}
+
+p.error {
+  color: red; /* Error messages in red */
+}
+
+p.success {
+  color: green; /* Success messages in green */
+}
+
+/* Adjust form layout for responsiveness */
+@media (max-width: 480px) {
+  .login-container {
+    margin: 60px auto;
+    padding: 15px;
   }
-  
-  .login-container h2 {
-    text-align: center;
-  }
-  
-  .login-container form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .login-container input {
-    margin-bottom: 10px;
+
+  button {
+    font-size: 14px; /* Adjust button size for smaller screens */
     padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
   }
-  
-  .login-container button {
+
+  input,
+  select {
+    font-size: 14px; /* Adjust font size for smaller screens */
     padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
   }
-  
-  .login-container button:hover {
-    background-color: #45a049;
-  }
-  
+}
+
+/* New User Registration Link */
+.register-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.register-link a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+  color: #45a049;
+}

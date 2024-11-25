@@ -1,31 +1,35 @@
+// src/components/Register.js
+
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom'; // Import Link for navigation
 import '../styles/Register.css'; // Ensure the styles are properly linked
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [userRole, setUserRole] = useState('student'); // Default role is 'student'
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
 
-  // Handle input changes for username, password, and email
+  // Handle input changes
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
+  const handleRoleChange = (e) => setUserRole(e.target.value);
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate input fields
     if (!username || !password || !email) {
       setMessage('All fields are required!');
       setIsError(true);
       return;
     }
 
-    console.log('Registering with:', { username, password, email });
+    console.log('Registering with:', { username, password, email, userRole });
 
     try {
       // Send a POST request to the backend API for registration
@@ -33,23 +37,21 @@ const Register = () => {
         username,
         password,
         email,
+        role: userRole, // Include the role in the request
       });
 
-      if (response.status === 201) { // Use 201 for created resource
+      if (response.status === 201) {
         setMessage('Registration successful! You can now log in.');
         setIsError(false);
-        // Optionally, redirect to the login page
         setTimeout(() => {
-          window.location.href = '/login'; // Replace with your login page URL
+          window.location.href = '/login';
         }, 2000);
       }
     } catch (error) {
       console.error('Error registering:', error);
-      if (error.response && error.response.data && error.response.data.message) {
-        setMessage(error.response.data.message); // Show backend error messages
-      } else {
-        setMessage('Registration failed. Please try again.');
-      }
+      setMessage(
+        error.response?.data?.message || 'Registration failed. Please try again.'
+      );
       setIsError(true);
     }
   };
@@ -57,7 +59,13 @@ const Register = () => {
   return (
     <div className="register-container">
       <h2>Register</h2>
-      {message && <p style={{ color: isError ? 'red' : 'green' }}>{message}</p>}
+      <div>
+        <label htmlFor="role">Role:</label>
+        <select id="role" value={userRole} onChange={handleRoleChange}>
+          <option value="student">Student</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="username">Username:</label>
@@ -94,6 +102,13 @@ const Register = () => {
 
         <button type="submit">Register</button>
       </form>
+      {message && (
+        <p className={isError ? 'error' : 'success'}>{message}</p>
+      )}
+      {/* Registration Prompt Link */}
+      <p className="login-link">
+        Already have an account? <Link to="/login">Login here</Link>
+      </p>
     </div>
   );
 };
