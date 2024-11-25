@@ -1,7 +1,6 @@
 /* Center the login container */
 .login-container {
-  margin: 100px auto;
-  margin-top: 150px;
+  margin: 70px auto;
   margin-bottom: 50px;
   padding: 20px;
   padding-left: 60px;
@@ -49,6 +48,31 @@ select:focus {
   border-color: #4CAF50;
   outline: none;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* Light green glow on focus */
+}
+
+/* Show/Hide Password Text */
+.password-container {
+  position: relative; /* Allows absolute positioning of the text */
+  display: flex;
+  align-items: center;
+}
+
+.password-container input {
+  padding-right: 70px; /* Space for the show/hide text inside the field */
+}
+
+.show-hide-text {
+  position: absolute;
+  right: 15px; /* Align text inside the input box */
+  top: 38%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #007bff; /* Blue clickable text */
+  cursor: pointer;
+}
+
+.show-hide-text:hover {
+  text-decoration: underline; /* Subtle underline on hover */
 }
 
 /* Submit Button */
@@ -105,6 +129,11 @@ p.success {
   select {
     font-size: 14px; /* Adjust font size for smaller screens */
     padding: 10px;
+  }
+
+  .show-hide-text {
+    font-size: 0.8rem; /* Adjust clickable text size for smaller screens */
+    right: 10px; /* Re-align for smaller inputs */
   }
 }
 

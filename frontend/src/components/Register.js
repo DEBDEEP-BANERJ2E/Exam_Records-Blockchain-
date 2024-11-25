@@ -1,23 +1,27 @@
-// src/components/Register.js
-
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // Import Link for navigation
-import '../styles/Register.css'; // Ensure the styles are properly linked
+import { Link } from 'react-router-dom';
+import '../styles/Register.css';
 
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [userRole, setUserRole] = useState('student'); // Default role is 'student'
+  const [userRole, setUserRole] = useState('student');
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false); // State for password visibility
 
   // Handle input changes
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleEmailChange = (e) => setEmail(e.target.value);
   const handleRoleChange = (e) => setUserRole(e.target.value);
+
+  // Toggle password visibility
+  const togglePasswordVisibility = () => {
+    setPasswordVisible((prevVisible) => !prevVisible);
+  };
 
   // Handle form submission
   const handleSubmit = async (e) => {
@@ -32,12 +36,11 @@ const Register = () => {
     console.log('Registering with:', { username, password, email, userRole });
 
     try {
-      // Send a POST request to the backend API for registration
       const response = await axios.post('http://localhost:5001/api/auth/register', {
         username,
         password,
         email,
-        role: userRole, // Include the role in the request
+        role: userRole,
       });
 
       if (response.status === 201) {
@@ -80,13 +83,21 @@ const Register = () => {
 
         <div>
           <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
+          <div className="password-container">
+            <input
+              type={passwordVisible ? 'text' : 'password'}
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            <span
+              className="password-toggle-text"
+              onClick={togglePasswordVisibility}
+            >
+              {passwordVisible ? 'Hide' : 'Show'}
+            </span>
+          </div>
         </div>
 
         <div>
@@ -105,7 +116,6 @@ const Register = () => {
       {message && (
         <p className={isError ? 'error' : 'success'}>{message}</p>
       )}
-      {/* Registration Prompt Link */}
       <p className="login-link">
         Already have an account? <Link to="/login">Login here</Link>
       </p>

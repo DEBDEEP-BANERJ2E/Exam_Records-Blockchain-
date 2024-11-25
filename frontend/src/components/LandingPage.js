@@ -5,12 +5,12 @@ const LandingPage = () => {
   console.log('Rendering LandingPage');
   return (
     <div className="landing-page">
-      <div className="landing-header">
-        <h1>Welcome to Blockchain Exam Records</h1>
+      <header className="landing-header">
+        <h1>Welcome to AcademicLedger</h1>
         <p>Your exams, securely stored and verified on the blockchain.</p>
-      </div>
+      </header>
       
-      <div className="landing-body">
+      <section className="landing-body">
         <h2>Why Blockchain for Exam Records?</h2>
         <p>
           Traditional exam record systems are prone to tampering, data manipulation, and fraud. By leveraging blockchain technology, we ensure that your exam records are:
@@ -21,15 +21,15 @@ const LandingPage = () => {
           <li><strong>Tamper-Proof:</strong> Once stored on the blockchain, exam records cannot be altered, providing trust and credibility to the system.</li>
           <li><strong>Decentralized:</strong> The blockchain network is decentralized, making it more robust and resistant to attacks or failures.</li>
         </ul>
-      </div>
+      </section>
 
-      <div className="landing-footer">
+      <footer className="landing-footer">
         <Link to="/login">
           <button className="start-btn">
             Get Started
           </button>
         </Link>
-      </div>
+      </footer>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 .App {
   font-family: Arial, sans-serif;
   background-color: #f4f4f9;
-  height: 100vh; /* Full viewport height */
   display: flex;
   flex-direction: column; /* Stacks the header, main, and footer */
+  height: 100vh; /* Full viewport height */
 }
 
 h1 {
@@ -61,7 +61,7 @@ h1 {
 
 /* Footer styles */
 .App > footer {
-  margin-top: auto; /* Push footer to the bottom of the page */
+  margin-top: auto; /* Ensures the footer sticks to the bottom */
   background-color: #34495e;
   color: #ecf0f1;
   text-align: center;

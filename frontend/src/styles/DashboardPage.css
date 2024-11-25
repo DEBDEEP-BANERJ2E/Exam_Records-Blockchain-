@@ -1,0 +1,141 @@
+/* Dashboard Page Styles */
+.dashboard-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 20px 40px;
+    background-color: #f4f7fc;
+    margin-top: 100px;
+    box-sizing: border-box;
+  }
+  
+  /* Main Content */
+  .main-content {
+    flex-grow: 1;
+    padding-bottom: 80px;
+  }
+  
+  .dashboard-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .dashboard-student-name {
+    font-size: 1.8rem;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  
+  /* Semester List */
+  .semester-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+    margin-bottom: 60px;
+  }
+  
+  /* Semester Card */
+  .semester-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+  .semester-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+    margin-bottom: 15px;
+    text-align: center;
+  }
+  
+  /* Course List */
+  .course-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .course-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+    color: #555;
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .course-item:last-child {
+    border-bottom: none;
+  }
+  
+  .course-item .course-name {
+    font-weight: bold;
+  }
+  
+  .course-item .course-marks {
+    font-size: 0.9rem;
+    border-radius: 4px;
+    padding: 2px 6px;
+  }
+  
+  .course-marks.pass {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .course-marks.fail {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  /* Verify Button */
+  .verify-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: center;
+  }
+  
+  .verify-btn:hover {
+    background-color: #218838;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 768px) {
+    .dashboard-title {
+      font-size: 2rem;
+    }
+  
+    .semester-list {
+      grid-template-columns: 1fr;
+    }
+  
+    .semester-card {
+      padding: 15px;
+    }
+  
+    .semester-title {
+      font-size: 1.3rem;
+    }
+  
+    .course-item {
+      font-size: 0.9rem;
+    }
+  }
+  

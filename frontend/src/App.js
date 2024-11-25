@@ -13,6 +13,7 @@ import VerifyPage from './components/VerifyPage';
 import Navbar from './components/Navbar';
 import BlockchainStatus from './components/BlockchainStatus';
 import LoadingSpinner from './components/LoadingSpinner';
+import { UserProvider } from './context/UserContext';
 
 const App = () => {
   const location = useLocation();
@@ -23,8 +24,15 @@ const App = () => {
   // Determine if the Header or Navbar should be shown
   const showHeader = showHeaderRoutes.includes(location.pathname);
 
+  // Condition to check if Footer should be displayed
+  const showFooterRoutes = ['/student-dashboard'];
+
+  // Check if current route is in showFooterRoutes
+  const showFooter = !showFooterRoutes.includes(location.pathname);
+
   return (
     <div className="App">
+      <UserProvider>
       {/* Conditional rendering of Header or Navbar */}
       {showHeader ? <Header /> : <Navbar />}
       
@@ -37,14 +45,18 @@ const App = () => {
           element={<ExamRecordCard exam={{ name: 'Math Exam', date: '2024-06-12', status: 'Passed' }} />}
         />
         <Route path="/student-dashboard" element={<DashboardPage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/admin-dashboard" element={<AdminPage />} />
         <Route path="/verify" element={<VerifyPage />} />
         <Route path="/blockchain-status" element={<BlockchainStatus />} />
         <Route path="/loading" element={<LoadingSpinner />} />
+        <Route path="/footer" element={<Footer />} />
+        
       </Routes>
-
-      <Footer />
+      {/* Conditionally render Footer */}
+      {showFooter && <Footer />}
+      </UserProvider>
     </div>
+    
   );
 };
 

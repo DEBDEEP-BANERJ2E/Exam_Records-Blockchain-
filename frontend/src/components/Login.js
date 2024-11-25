@@ -1,61 +1,58 @@
-// src/components/Login.js
-
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Link } from 'react-router-dom'; // Import Link for navigation
-import '../styles/Login.css'; // Corrected import for CSS
+import React, { useState } from "react";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import "../styles/Login.css";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [userRole, setUserRole] = useState('student'); // Default role is 'student'
-  const [message, setMessage] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [userRole, setUserRole] = useState("student");
+  const [message, setMessage] = useState("");
   const [isError, setIsError] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // For show/hide password
 
-  // Handle input changes
+  const navigate = useNavigate();
+
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
   const handleRoleChange = (e) => setUserRole(e.target.value);
+  const togglePasswordVisibility = () => setShowPassword(!showPassword); // Toggle password visibility
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!username || !password) {
-      setMessage('Both fields are required!');
+      setMessage("Both fields are required!");
       setIsError(true);
       return;
     }
 
-    console.log('Logging in with:', { username, password, userRole });
-
     try {
-      // Send a POST request to the backend API with role
-      const response = await axios.post('http://localhost:5001/api/auth/login', {
+      const response = await axios.post("http://localhost:5001/api/auth/login", {
         username,
         password,
-        role: userRole, // Include the role in the request
+        role: userRole,
       });
 
       if (response.status === 200) {
-        setMessage('Login successful!');
+        setMessage("Login successful!");
         setIsError(false);
 
-        // Redirect based on user role
-        if (userRole === 'student') {
-          window.location.href = '/student-dashboard';
-        } else if (userRole === 'admin') {
-          window.location.href = '/admin-dashboard';
-        }
+        // Delay the navigation for 2 seconds
+        setTimeout(() => {
+          if (userRole === "student") {
+            navigate("/student-dashboard", { state: { username } });
+          } else if (userRole === "admin") {
+            navigate("/admin-dashboard", { state: { username } });
+          }
+        }, 1000);
       } else {
-        setMessage('Login failed. Please check your credentials.');
+        setMessage("Login failed. Please check your credentials.");
         setIsError(true);
       }
     } catch (error) {
-      console.error('Error logging in:', error);
-      setMessage(
-        error.response?.data?.message || 'Login failed. Please try again.'
-      );
+      console.error("Error logging in:", error);
+      setMessage(error.response?.data?.message || "Login failed. Please try again.");
       setIsError(true);
     }
   };
@@ -84,21 +81,26 @@ const Login = () => {
 
         <div>
           <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={handlePasswordChange}
-            required
-          />
+          <div className="password-container">
+            <input
+              type={showPassword ? "text" : "password"} // Show or hide password
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+              required
+            />
+            <span
+              className="show-hide-text"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? "Hide" : "Show"}
+            </span>
+          </div>
         </div>
 
         <button type="submit">Login</button>
       </form>
-      {message && (
-        <p className={isError ? 'error' : 'success'}>{message}</p>
-      )}
-      {/* New User Registration Link */}
+      {message && <p className={isError ? "error" : "success"}>{message}</p>}
       <p className="register-link">
         New user? <Link to="/register">Register here</Link>
       </p>
