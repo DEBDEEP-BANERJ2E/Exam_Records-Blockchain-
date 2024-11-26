@@ -1,22 +1,21 @@
-require('dotenv').config();
 const express = require('express');
-const adminRoutes = require('./routes/adminRoutes');
-const studentRoutes = require('./routes/studentRoutes');
-const { connectToDatabase } = require('./utils/db');
-
+const cors = require('cors');
 const app = express();
+const studentRoutes = require('./routes/studentRoutes'); // Importing routes
+const PORT = 8080;
 
-// Middleware
+app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/admin', adminRoutes);
-app.use('/api/student', studentRoutes);
+// Log incoming requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`, req.body);
+  next();
+});
 
-// Start server
-const PORT = process.env.PORT || 5000;
-connectToDatabase().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
-    });
+// Use student routes
+app.use('/api/students', studentRoutes); // All routes are handled here
+
+app.listen(PORT, () => {
+  console.log(`Backend server is running on http://localhost:${PORT}`);
 });

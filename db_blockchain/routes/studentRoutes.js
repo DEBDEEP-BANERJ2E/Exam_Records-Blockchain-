@@ -1,9 +1,12 @@
 const express = require('express');
-const { verifyExamRecord } = require('../controllers/studentController');
+const { getAllStudents, addStudent } = require('../controllers/studentController');
 
 const router = express.Router();
 
-// Route to verify an exam record
-router.post('/verify-record', verifyExamRecord);
+// Route to fetch all student records
+router.get('/', getAllStudents);
+
+// Route to add a new student record
+router.post('/', addStudent);
 
 module.exports = router;
