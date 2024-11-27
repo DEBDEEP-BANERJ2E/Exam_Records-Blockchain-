@@ -53,8 +53,12 @@ const DashboardPage = () => {
                   </li>
                 ))}
               </ul>
-              <Link to="/verify">
-                <button className="verify-btn">Verify</button>
+              <Link to="/verify"
+                  state={{
+                    semester: semester.semester,
+                    courses: semester.courses,
+                  }}>
+                  <button className="verify-btn">Verify</button>
               </Link>
             </div>
           ))}
