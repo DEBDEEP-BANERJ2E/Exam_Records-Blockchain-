@@ -1,8 +1,151 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import Web3 from "web3"; // Web3 for blockchain interaction
-import ExamRecordContract from "../contracts/ExamRecord.json"; // Import contract ABI
+import Web3 from "web3";
 import "../styles/VerifyPage.css";
+
+// Smart contract ABI
+const ABI = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "studentId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "examName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "score",
+        "type": "uint256"
+      }
+    ],
+    "name": "RecordAdded",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "studentId",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "examName",
+        "type": "string"
+      }
+    ],
+    "name": "RecordVerified",
+    "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "admin",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_studentId",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_examName",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_score",
+        "type": "uint256"
+      }
+    ],
+    "name": "addRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_studentId",
+        "type": "string"
+      }
+    ],
+    "name": "verifyRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_studentId",
+        "type": "string"
+      }
+    ],
+    "name": "getRecord",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newAdmin",
+        "type": "address"
+      }
+    ],
+    "name": "changeAdmin",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
 
 const VerifyPage = () => {
   const location = useLocation();
@@ -14,19 +157,18 @@ const VerifyPage = () => {
     const fetchBlockchainData = async () => {
       try {
         const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
-        const networkId = await web3.eth.net.getId();
-        const deployedNetwork = ExamRecordContract.networks[networkId];
-        const contract = new web3.eth.Contract(
-          ExamRecordContract.abi,
-          deployedNetwork && deployedNetwork.address
-        );
+        const contractAddress = "<Your_Contract_Address>"; // Replace with the deployed contract address
+        const contract = new web3.eth.Contract(ABI, contractAddress);
 
         const records = await Promise.all(
           courses.map(async (course) => {
             const record = await contract.methods
-              .getExamRecord(course.name, semester)
+              .getRecord(course.name) // Adjusted to match your contract
               .call();
-            return { ...course, blockchainStatus: record.passFail };
+            return { 
+              ...course, 
+              blockchainStatus: record[2] ? "Pass" : "Fail" // Assuming record[2] is boolean
+            };
           })
         );
 

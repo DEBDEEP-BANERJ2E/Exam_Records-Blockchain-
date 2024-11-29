@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authorized Exam Records</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+  <script defer src="js/authorized.js"></script>
+</head>
+<body>
+    <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="authorized.html" class="active">Authorized Access</a></li>
+        </ul>
+      </nav>
+      
+  <div class="container">
+    <h1>Authorized Access - Manage Exam Records</h1>
+    <div id="authStatus"></div>
+
+    <div class="form-container">
+      <h2>Add or Update Exam Record</h2>
+      <form id="addRecordForm">
+        <input type="text" id="studentID" placeholder="Student ID" required>
+        <input type="text" id="examName" placeholder="Exam Name" required>
+        <input type="text" id="studentName" placeholder="Student Name" required>
+        <input type="number" id="score" placeholder="Score" required>
+        <input type="text" id="metadataURI" placeholder="Metadata URI (e.g., IPFS link)" required>
+        <button type="submit">Add/Update Record</button>
+        <div id="addRecordResult"></div>
+      </form>
+    </div>
+
+    <div class="form-container">
+      <h2>Authorize an Institution</h2>
+      <form id="authorizeForm">
+        <input type="text" id="authorizeAddress" placeholder="Institution Address" required>
+        <button type="submit">Authorize Institution</button>
+        <div id="authorizeResult"></div>
+      </form>
+    </div>
+
+    <div class="form-container">
+      <h2>Revoke Institution Authorization</h2>
+      <form id="revokeForm">
+        <input type="text" id="revokeAddress" placeholder="Institution Address" required>
+        <button type="submit">Revoke Authorization</button>
+        <div id="revokeResult"></div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

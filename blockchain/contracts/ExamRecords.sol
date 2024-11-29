@@ -3,14 +3,14 @@ pragma solidity ^0.8.0;
 
 contract ExamRecords {
     struct Record {
-        string studentId;
         string examName;
         uint256 score;
         bool verified;
+        bool exists; // Ensures record existence is explicitly tracked
     }
 
     address public admin;
-    mapping(bytes32 => Record) private records; // Maps hashed studentId to their record
+    mapping(bytes32 => Record) private records;
 
     event RecordAdded(string studentId, string examName, uint256 score);
     event RecordVerified(string studentId, string examName);
@@ -31,16 +31,25 @@ contract ExamRecords {
         uint256 _score
     ) public onlyAdmin {
         bytes32 recordKey = keccak256(abi.encodePacked(_studentId));
-        require(bytes(records[recordKey].studentId).length == 0, "Record already exists");
-        records[recordKey] = Record(_studentId, _examName, _score, false);
+        require(!records[recordKey].exists, "Record already exists");
+
+        records[recordKey] = Record({
+            examName: _examName,
+            score: _score,
+            verified: false,
+            exists: true
+        });
+
         emit RecordAdded(_studentId, _examName, _score);
     }
 
     function verifyRecord(string memory _studentId) public onlyAdmin {
         bytes32 recordKey = keccak256(abi.encodePacked(_studentId));
-        require(bytes(records[recordKey].studentId).length != 0, "Record does not exist");
+        require(records[recordKey].exists, "Record does not exist");
         require(!records[recordKey].verified, "Record already verified");
+
         records[recordKey].verified = true;
+
         emit RecordVerified(_studentId, records[recordKey].examName);
     }
 
@@ -49,16 +58,21 @@ contract ExamRecords {
     )
         public
         view
-        returns (string memory, string memory, uint256, bool)
+        returns (string memory, uint256, bool)
     {
         bytes32 recordKey = keccak256(abi.encodePacked(_studentId));
-        require(bytes(records[recordKey].studentId).length != 0, "Record does not exist");
+        require(records[recordKey].exists, "Record does not exist");
+
         Record memory record = records[recordKey];
         return (
-            record.studentId,
             record.examName,
             record.score,
             record.verified
         );
+    }
+
+    function changeAdmin(address newAdmin) public onlyAdmin {
+        require(newAdmin != address(0), "New admin cannot be zero address");
+        admin = newAdmin;
     }
 }

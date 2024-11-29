@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Exam Records</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/web3/dist/web3.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="authorized.html">Authorized Access</a></li>
+    </ul>
+  </nav>
+  
+  <div class="container">
+    <h1>Secure Exam Records</h1>
+    <div id="authStatus"></div>
+
+    <div class="form-container">
+      <h2>Verify if a Record Exists</h2>
+      <form id="verifyRecordForm">
+        <input type="text" id="verifyStudentID" placeholder="Student ID" required>
+        <input type="text" id="verifyExamName" placeholder="Exam Name" required>
+        <button type="submit">Verify Record</button>
+        <div id="verifyResult"></div>
+      </form>
+    </div>
+
+    <div class="form-container">
+      <h2>Fetch Record Details (Authorized Users Only)</h2>
+      <form id="fetchRecordForm">
+        <input type="text" id="fetchStudentID" placeholder="Student ID" required>
+        <input type="text" id="fetchExamName" placeholder="Exam Name" required>
+        <button type="submit">Fetch Record</button>
+        <div id="fetchResult"></div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
