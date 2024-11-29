@@ -8,8 +8,8 @@ module.exports = async function (callback) {
     const accounts = await web3.eth.getAccounts();
     const adminAddress = accounts[0];  // Make sure this is the admin account
     
-    // Add record
-    const tx = await instance.addRecord("123", "Biology", 85, { from: adminAddress });
+    // Add record (with course name and semester)
+    const tx = await instance.addRecord("123", "Biology", 1, 85, { from: adminAddress });
     
     console.log("Record added successfully.");
     console.log("Transaction hash:", tx.tx);
