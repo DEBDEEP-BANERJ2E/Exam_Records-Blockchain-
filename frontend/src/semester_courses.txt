@@ -1,0 +1,94 @@
+Semester 1:
+
+Mathematics-I
+Physics-I
+Programming in C
+Basic Electrical Engineering
+Engineering Mechanics
+Environmental Science
+Communication Skills
+Engineering Drawing
+
+
+Semester 2:
+
+Mathematics-II
+Physics-II
+Digital Logic Design
+Basic Electronics Engineering
+Mechanical Engineering
+Chemistry
+Communication Skills (Lab)
+Introduction to Computing
+
+
+Semester 3:
+
+Mathematics-III
+Data Structures
+Discrete Mathematics
+Computer Organization and Architecture
+Object-Oriented Programming (C++)
+Computer Graphics
+Operating Systems
+Data Communication and Networks
+
+
+Semester 4:
+
+Mathematics-IV (Numerical Methods)
+Database Management Systems
+Software Engineering
+Theory of Computation
+Microprocessors and Microcontrollers
+Design and Analysis of Algorithms
+Computer Networks (Lab)
+Electrical Engineering (Lab)
+
+
+Semester 5:
+
+Compiler Design
+Web Technologies
+Computer Architecture
+Operating Systems (Lab)
+Software Engineering (Lab)
+Artificial Intelligence
+Digital Signal Processing
+Probability and Statistics
+
+
+Semester 6:
+
+Computer Networks-II (Advanced)
+Advanced Algorithms
+Embedded Systems
+Machine Learning
+Cybersecurity
+Cloud Computing
+Web Development (Lab)
+Computer Vision
+
+
+Semester 7:
+
+Data Science and Big Data
+Internet of Things (IoT)
+Mobile Computing
+Software Project Management
+Blockchain Technology
+Distributed Computing
+Natural Language Processing
+Elective I (e.g., Advanced AI or Robotics)
+
+
+Semester 8:
+
+Machine Learning (Advanced)
+Cloud Computing (Advanced)
+Capstone Project
+Ethical Hacking
+Computer Forensics
+Advanced Database Management Systems
+Elective II (e.g., Quantum Computing or Virtual Reality)
+Internship or Industry Project

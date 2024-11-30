@@ -17,6 +17,7 @@ const AdminPage = () => {
   const [error, setError] = useState(null);
 
   const API_URL = 'http://localhost:8080/api/students';
+  const API_URL1 = 'http://localhost:5002/add';
 
   // Fetch records from the database
   useEffect(() => {
@@ -50,6 +51,7 @@ const AdminPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Send data to the first API_URL
       const response = await fetch(API_URL, {
         method: 'POST',
         headers: {
@@ -57,14 +59,37 @@ const AdminPage = () => {
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (!response.ok) {
-        throw new Error('Failed to add record');
+        throw new Error('Failed to add record to first API');
       }
-
+  
       const newRecord = await response.json();
       setStudentRecords((prevRecords) => [...prevRecords, newRecord]);
-      alert('Record added successfully!');
+      alert('Record added to the first API successfully!');
+  
+      // Now send data (studentID, courseName, semester, and score) to the second API_URL1
+      const { studentID, examName, semester, score } = formData; // Extract the required data
+      const response2 = await fetch(API_URL1, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          studentID,
+          examName,  // Correcting from courseName to examName based on your input fields
+          semester,
+          score,     // Include score here
+        }),
+      });
+  
+      if (!response2.ok) {
+        throw new Error('Failed to add record to second API');
+      }
+  
+      alert('Record added to the second API successfully!');
+  
+      // Clear the form data after successful submission to both APIs
       setFormData({
         studentID: '',
         studentName: '',
@@ -209,4 +234,4 @@ const AdminPage = () => {
   );
 };
 
-export default AdminPage;
+export default AdminPage; 

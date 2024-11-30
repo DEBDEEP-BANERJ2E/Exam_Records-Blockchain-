@@ -1,0 +1,23 @@
+[
+  {
+    "studentID": "STU005",
+    "examName": "Mathematics-II",
+    "semester": "2",
+    "score": "92",
+    "timestamp": "2024-11-29T15:46:02.401Z"
+  },
+  {
+    "studentID": "STU005",
+    "examName": "Chemistry",
+    "semester": "2",
+    "score": "76",
+    "timestamp": "2024-11-29T16:37:01.157Z"
+  },
+  {
+    "studentID": "STU005",
+    "examName": "Physics-II",
+    "semester": "2",
+    "score": "56",
+    "timestamp": "2024-11-29T16:40:09.132Z"
+  }
+]
