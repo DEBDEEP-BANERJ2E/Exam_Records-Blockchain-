@@ -14,6 +14,7 @@ import Navbar from './components/Navbar';
 import BlockchainStatus from './components/BlockchainStatus';
 import LoadingSpinner from './components/LoadingSpinner';
 import { UserProvider } from './context/UserContext';
+import Verify from './components/Verify';
 
 const App = () => {
   const location = useLocation();
@@ -47,6 +48,7 @@ const App = () => {
         <Route path="/student-dashboard" element={<DashboardPage />} />
         <Route path="/admin-dashboard" element={<AdminPage />} />
         <Route path="/verify" element={<VerifyPage />} />
+        <Route path="/verifyblockchain" element={<Verify />} />
         <Route path="/blockchain-status" element={<BlockchainStatus />} />
         <Route path="/loading" element={<LoadingSpinner />} />
         <Route path="/footer" element={<Footer />} />

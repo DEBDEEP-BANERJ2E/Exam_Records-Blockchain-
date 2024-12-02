@@ -20,30 +20,37 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     if (!username || !password) {
       setMessage("Both fields are required!");
       setIsError(true);
       return;
     }
-
+  
     try {
       const response = await axios.post("http://localhost:5001/api/auth/login", {
         username,
         password,
         role: userRole,
       });
-
+  
       if (response.status === 200) {
         setMessage("Login successful!");
         setIsError(false);
-
+  
+        // Store username and password in localStorage/sessionStorage
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("password", password);
+  
         // Delay the navigation for 2 seconds
         setTimeout(() => {
           if (userRole === "student") {
-            navigate("/student-dashboard", { state: { username } });
+            navigate("/student-dashboard", { state: { username, password } });
           } else if (userRole === "admin") {
-            navigate("/admin-dashboard", { state: { username } });
+            navigate("/admin-dashboard", { state: { username, password } });
+          } else {
+            // Navigate to /verify route for verification
+            navigate("/verify");
           }
         }, 1000);
       } else {
@@ -56,6 +63,7 @@ const Login = () => {
       setIsError(true);
     }
   };
+  
 
   return (
     <div className="login-container">

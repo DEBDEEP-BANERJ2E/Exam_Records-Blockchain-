@@ -1,20 +1,40 @@
 .verify-page {
+    font-family: Arial, sans-serif;
     text-align: center;
-    padding: 50px;
+    margin-top: 120px;
+  }
+  
+  .verify-form {
+    margin-bottom: 20px;
   }
   
   .verify-btn {
-    padding: 10px 20px;
-    background-color: #28a745;
+    background-color: #4caf50;
     color: white;
     border: none;
+    padding: 10px 20px;
     cursor: pointer;
-    border-radius: 5px;
   }
   
-  .verify-success {
-    margin-top: 20px;
-    color: #28a745;
-    font-weight: bold;
+  .records-section {
+    margin: 20px auto;
+    max-width: 600px;
+  }
+  
+  .records-section table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .records-section table, .records-section th, .records-section td {
+    border: 1px solid #ddd;
+  }
+  
+  .verification-result.verified {
+    color: green;
+  }
+  
+  .verification-result.not-verified {
+    color: red;
   }
   

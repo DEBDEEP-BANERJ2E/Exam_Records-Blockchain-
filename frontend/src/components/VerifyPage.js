@@ -1,222 +1,206 @@
-import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
-import Web3 from "web3";
-import "../styles/VerifyPage.css";
-
-// Smart contract ABI
-const ABI = [
-  {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "studentId",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "examName",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "score",
-        "type": "uint256"
-      }
-    ],
-    "name": "RecordAdded",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "studentId",
-        "type": "string"
-      },
-      {
-        "indexed": false,
-        "internalType": "string",
-        "name": "examName",
-        "type": "string"
-      }
-    ],
-    "name": "RecordVerified",
-    "type": "event"
-  },
-  {
-    "inputs": [],
-    "name": "admin",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_studentId",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "_examName",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "_score",
-        "type": "uint256"
-      }
-    ],
-    "name": "addRecord",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_studentId",
-        "type": "string"
-      }
-    ],
-    "name": "verifyRecord",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "_studentId",
-        "type": "string"
-      }
-    ],
-    "name": "getRecord",
-    "outputs": [
-      {
-        "internalType": "string",
-        "name": "",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bool",
-        "name": "",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "newAdmin",
-        "type": "address"
-      }
-    ],
-    "name": "changeAdmin",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  }
-];
+import React, { useState, useEffect } from 'react';
+import '../styles/VerifyPage.css';
+import examData from '../data/examRecords.json'; // Assuming the JSON file is in a `data` folder
 
 const VerifyPage = () => {
-  const location = useLocation();
-  const { semester, courses } = location.state || {};
-  const [blockchainData, setBlockchainData] = useState([]);
+  const [records, setRecords] = useState([]);
+  const [filteredExamRecords, setFilteredExamRecords] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [verificationStatus, setVerificationStatus] = useState(null);
+  const [mismatches, setMismatches] = useState([]);
+
+  const API_URL = 'http://localhost:8080/api/records/semester1'; // Endpoint for records from the backend
+  const storedPassword = sessionStorage.getItem('password'); // Assuming password is studentID
 
   useEffect(() => {
-    const fetchBlockchainData = async () => {
+    const fetchRecords = async () => {
       try {
-        const web3 = new Web3(Web3.givenProvider || "http://localhost:7545");
-        const contractAddress = "<Your_Contract_Address>"; // Replace with the deployed contract address
-        const contract = new web3.eth.Contract(ABI, contractAddress);
+        setIsLoading(true);
+        const response = await fetch(API_URL);
 
-        const records = await Promise.all(
-          courses.map(async (course) => {
-            const record = await contract.methods
-              .getRecord(course.name) // Adjusted to match your contract
-              .call();
-            return { 
-              ...course, 
-              blockchainStatus: record[2] ? "Pass" : "Fail" // Assuming record[2] is boolean
-            };
-          })
+        if (!response.ok) {
+          throw new Error('Failed to fetch records');
+        }
+
+        const data = await response.json();
+        const filteredRecords = data.filter(
+          (record) => record.studentID === storedPassword
         );
 
-        setBlockchainData(records);
-      } catch (error) {
-        console.error("Error fetching blockchain data:", error);
+        setRecords(filteredRecords);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setIsLoading(false);
       }
     };
 
-    fetchBlockchainData();
-  }, [semester, courses]);
+    fetchRecords();
+  }, [storedPassword]);
 
-  if (isLoading) {
-    return <div>Loading blockchain data...</div>;
-  }
+  useEffect(() => {
+    const filteredData = examData.filter(
+      (exam) => exam.studentID === storedPassword && exam.semester === "1"
+    );
+    setFilteredExamRecords(filteredData);
+  }, [storedPassword]);
+
+  const checkVerificationStatus = () => {
+    if (records.length === filteredExamRecords.length) {
+      // Check if all records match based on relevant fields
+      const allMatch = records.every(record => {
+        return filteredExamRecords.some(exam =>
+          // Ensure matching studentID, examName, and score
+          exam.studentID === record.studentID &&
+          exam.examName === record.examName &&
+          exam.score === String(record.score) && // Ensure score comparison as a string in filteredExamRecords
+          exam.semester === '1' // Check semester value for filteredExamRecords (assuming it's '1' for all exams)
+        );
+      });
+  
+      if (allMatch) {
+        setVerificationStatus('Verified');
+        setMismatches([]); // Clear mismatches if everything matches
+      } else {
+        setVerificationStatus('Not Verified');
+        // Collect mismatched records
+        const mismatchedRecords = records.filter(record => {
+          return !filteredExamRecords.some(exam =>
+            exam.studentID === record.studentID &&
+            exam.examName === record.examName &&
+            exam.score === String(record.score) && // Ensure score comparison
+            exam.semester === '1'
+          );
+        });
+        setMismatches(mismatchedRecords);
+      }
+    } else {
+      setVerificationStatus('Not Verified');
+      // Collect mismatched records
+      const mismatchedRecords = records.filter(record => {
+        return !filteredExamRecords.some(exam =>
+          exam.studentID === record.studentID &&
+          exam.examName === record.examName &&
+          exam.score === String(record.score) &&
+          exam.semester === '1'
+        );
+      });
+      setMismatches(mismatchedRecords);
+    }
+  };
+  
+
+  useEffect(() => {
+    if (records.length > 0 && filteredExamRecords.length > 0) {
+      checkVerificationStatus();
+    }
+  }, [records, filteredExamRecords]);
+
+  // Debugging Logs for Data Checking
+  console.log('Records:', records);
+  console.log('Filtered Exam Records:', filteredExamRecords);
 
   return (
     <div className="verify-page">
-      <h1>Verification Page</h1>
-      <h2>Semester: {semester}</h2>
-      <table className="verify-table">
-        <thead>
-          <tr>
-            <th>Course</th>
-            <th>Marks</th>
-            <th>Pass/Fail (Database)</th>
-            <th>Pass/Fail (Blockchain)</th>
-            <th>Verification Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {blockchainData.map((course, idx) => (
-            <tr key={idx}>
-              <td>{course.name}</td>
-              <td>{course.marks}</td>
-              <td>{course.status}</td>
-              <td>{course.blockchainStatus}</td>
-              <td>
-                {course.status === course.blockchainStatus
-                  ? "Verified"
-                  : "Mismatch"}
-              </td>
+      <h1>Verify Records</h1>
+      <br>
+      </br>
+      <h2>Database Records</h2>
+
+      {isLoading ? (
+        <p>Loading records...</p>
+      ) : error ? (
+        <p className="error-message">Error: {error}</p>
+      ) : records.length > 0 ? (
+        <table className="records-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Student ID</th>
+              <th>Exam Name</th>
+              <th>Semester</th>
+              <th>Score</th>
+              <th>Pass/Fail</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {records.map((record) => (
+              <tr key={record.id}>
+                <td>{record.id}</td>
+                <td>{record.studentID}</td>
+                <td>{record.examName}</td>
+                <td>{record.semester}</td>
+                <td>{record.score}</td>
+                <td>{record.pass_or_fail}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No records found for this student.</p>
+      )}
+      <br></br><br></br>
+      <h2>Blockchain Records</h2>
+
+      {filteredExamRecords.length > 0 ? (
+        <table className="records-table">
+          <thead>
+            <tr>
+              <th>Student ID</th>
+              <th>Exam Name</th>
+              <th>Semester</th>
+              <th>Score</th>
+              <th>Timestamp</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredExamRecords.map((exam) => (
+              <tr key={exam.timestamp}>
+                <td>{exam.studentID}</td>
+                <td>{exam.examName}</td>
+                <td>{exam.semester}</td>
+                <td>{exam.score}</td>
+                <td>{new Date(exam.timestamp).toLocaleString()}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ) : (
+        <p>No records found for semester 1 exams for this student.</p>
+      )}
+      <br></br><br></br>
+      {verificationStatus && (
+        <div className="verification-status">
+          <h3>{verificationStatus}</h3>
+        </div>
+      )}
+
+      {verificationStatus === 'Not Verified' && mismatches.length > 0 && (
+        <div className="mismatches">
+          <h3>Not Verified Entries:</h3>
+          <table className="records-table">
+            <thead>
+              <tr>
+                <th>Student ID</th>
+                <th>Exam Name</th>
+                <th>Semester</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mismatches.map((mismatch, index) => (
+                <tr key={index}>
+                  <td>{mismatch.studentID}</td>
+                  <td>{mismatch.examName}</td>
+                  <td>{mismatch.semester}</td>
+                  <td>{mismatch.score}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };
